@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Memory = {
   id: number;
@@ -112,6 +112,8 @@ const initialChats: Record<number, ChatMessage[]> = {
   ],
 };
 
+const STORAGE_KEY = "bonfire-profile";
+
 function App() {
   const [lit, setLit] = useState(false);
 
@@ -121,40 +123,155 @@ function App() {
   const [selectedPerson, setSelectedPerson] =
     useState<Person | null>(null);
 
-  const [showIdentity, setShowIdentity] =
-    useState(true);
+  const [displayName, setDisplayName] = useState(() => {
+    try {
+      return localStorage.getItem("bonfire-display-name") || "";
+    } catch {
+      return "";
+    }
+  });
 
-  const [showPrivacy, setShowPrivacy] =
-    useState(false);
-
-  const [displayName, setDisplayName] =
-    useState("");
-
-  const [username, setUsername] =
-    useState("");
+  const [username, setUsername] = useState(() => {
+    try {
+      return localStorage.getItem("bonfire-username") || "";
+    } catch {
+      return "";
+    }
+  });
 
   const [privacy, setPrivacy] =
-    useState<PrivacyOption>("chosen");
+    useState<PrivacyOption>(() => {
+      try {
+        const saved = localStorage.getItem(
+          "bonfire-privacy"
+        );
+
+        if (
+          saved === "everyone" ||
+          saved === "chosen" ||
+          saved === "nobody"
+        ) {
+          return saved;
+        }
+      } catch {}
+
+      return "chosen";
+    });
 
   const [profileCreated, setProfileCreated] =
+    useState(() => {
+      try {
+        return localStorage.getItem(STORAGE_KEY) === "true";
+      } catch {
+        return false;
+      }
+    });
+
+  const [showIdentity, setShowIdentity] =
+    useState(() => {
+      try {
+        return localStorage.getItem(STORAGE_KEY) !== "true";
+      } catch {
+        return true;
+      }
+    });
+
+  const [showPrivacy, setShowPrivacy] =
     useState(false);
 
   const [activeView, setActiveView] =
     useState<"fire" | "people">("fire");
 
   const [visiblePeople, setVisiblePeople] =
-    useState<number[]>([1, 2]);
+    useState<number[]>(() => {
+      try {
+        const saved = localStorage.getItem(
+          "bonfire-visible-people"
+        );
+
+        if (saved) {
+          const parsed = JSON.parse(saved);
+
+          if (Array.isArray(parsed)) {
+            return parsed;
+          }
+        }
+      } catch {}
+
+      return [1, 2];
+    });
 
   const [chattingWith, setChattingWith] =
     useState<Person | null>(null);
 
   const [chatMessages, setChatMessages] =
-    useState<Record<number, ChatMessage[]>>(
-      initialChats
-    );
+    useState<Record<number, ChatMessage[]>>(() => {
+      try {
+        const saved = localStorage.getItem(
+          "bonfire-chats"
+        );
+
+        if (saved) {
+          const parsed = JSON.parse(saved);
+
+          if (parsed && typeof parsed === "object") {
+            return parsed;
+          }
+        }
+      } catch {}
+
+      return initialChats;
+    });
 
   const [messageText, setMessageText] =
     useState("");
+
+  /*
+   * SAVE PROFILE
+   *
+   * Every time the important profile information
+   * changes, we store it in the browser.
+   */
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "bonfire-display-name",
+        displayName
+      );
+
+      localStorage.setItem(
+        "bonfire-username",
+        username
+      );
+
+      localStorage.setItem(
+        "bonfire-privacy",
+        privacy
+      );
+
+      localStorage.setItem(
+        "bonfire-visible-people",
+        JSON.stringify(visiblePeople)
+      );
+
+      localStorage.setItem(
+        "bonfire-chats",
+        JSON.stringify(chatMessages)
+      );
+    } catch {
+      // Ignore storage errors.
+    }
+  }, [
+    displayName,
+    username,
+    privacy,
+    visiblePeople,
+    chatMessages,
+  ]);
+
+  /*
+   * IDENTITY
+   */
 
   function continueToPrivacy() {
     if (
@@ -168,10 +285,56 @@ function App() {
     setShowPrivacy(true);
   }
 
+  /*
+   * ENTER BONFIRE
+   */
+
   function enterBonfire() {
+    if (
+      !displayName.trim() ||
+      !username.trim()
+    ) {
+      setShowIdentity(true);
+      setShowPrivacy(false);
+      return;
+    }
+
     setProfileCreated(true);
     setShowPrivacy(false);
+
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        "true"
+      );
+
+      localStorage.setItem(
+        "bonfire-display-name",
+        displayName.trim()
+      );
+
+      localStorage.setItem(
+        "bonfire-username",
+        username.trim()
+      );
+
+      localStorage.setItem(
+        "bonfire-privacy",
+        privacy
+      );
+
+      localStorage.setItem(
+        "bonfire-visible-people",
+        JSON.stringify(visiblePeople)
+      );
+    } catch {
+      // Ignore storage errors.
+    }
   }
+
+  /*
+   * PROFILE
+   */
 
   function openProfile() {
     if (profileCreated) {
@@ -180,6 +343,10 @@ function App() {
       setShowIdentity(true);
     }
   }
+
+  /*
+   * PEOPLE
+   */
 
   function selectPerson(person: Person) {
     setSelectedPerson(person);
@@ -196,6 +363,10 @@ function App() {
 
     setPrivacy("chosen");
   }
+
+  /*
+   * PRIVACY DESCRIPTION
+   */
 
   function getPrivacyDescription() {
     if (privacy === "everyone") {
@@ -216,6 +387,10 @@ function App() {
         : "people"
     } can see you`;
   }
+
+  /*
+   * CHAT
+   */
 
   function openConversation(person: Person) {
     setChattingWith(person);
@@ -252,7 +427,9 @@ function App() {
 
     setMessageText("");
 
-    // Small local prototype response.
+    /*
+     * Small local prototype response.
+     */
     setTimeout(() => {
       const reply: ChatMessage = {
         id: Date.now() + 1,
@@ -269,6 +446,10 @@ function App() {
       }));
     }, 900);
   }
+
+  /*
+   * RENDER
+   */
 
   return (
     <main
@@ -591,7 +772,9 @@ function App() {
               ● {selectedPerson.status}
             </span>
 
-            <h2>{selectedPerson.name}</h2>
+            <h2>
+              {selectedPerson.name}
+            </h2>
 
             <span className="person-detail-username">
               @{selectedPerson.username}
@@ -673,19 +856,26 @@ function App() {
                       message.from === "me"
                         ? "flex-end"
                         : "flex-start",
+
                     maxWidth: "78%",
+
                     padding:
                       "10px 13px",
+
                     borderRadius: "14px",
+
                     background:
                       message.from === "me"
                         ? "#e9dfd1"
                         : "rgba(255,255,255,0.06)",
+
                     color:
                       message.from === "me"
                         ? "#191613"
                         : "#eee7dc",
+
                     fontSize: "13px",
+
                     lineHeight: 1.4,
                   }}
                 >
@@ -841,6 +1031,9 @@ function App() {
             </p>
 
             <div className="privacy-options">
+
+              {/* EVERYONE */}
+
               <button
                 className={`privacy-option ${
                   privacy === "everyone"
@@ -868,6 +1061,8 @@ function App() {
 
                 <span className="option-radio" />
               </button>
+
+              {/* CHOSEN */}
 
               <button
                 className={`privacy-option ${
@@ -897,6 +1092,8 @@ function App() {
                 <span className="option-radio" />
               </button>
 
+              {/* NOBODY */}
+
               <button
                 className={`privacy-option ${
                   privacy === "nobody"
@@ -924,6 +1121,8 @@ function App() {
                 <span className="option-radio" />
               </button>
             </div>
+
+            {/* CHOSEN PEOPLE */}
 
             {privacy === "chosen" && (
               <div className="chosen-people">
@@ -997,6 +1196,8 @@ function App() {
               </div>
             )}
 
+            {/* PRIVACY STATUS */}
+
             <div className="privacy-status-line">
               <span className="privacy-status-dot" />
 
@@ -1004,6 +1205,8 @@ function App() {
                 {getPrivacyDescription()}
               </span>
             </div>
+
+            {/* SAVE */}
 
             <button
               className="enter-fire-button"
