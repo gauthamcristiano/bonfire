@@ -36,7 +36,6 @@ button:focus-visible {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-
   background:
     radial-gradient(
       circle at 50% 50%,
@@ -45,8 +44,6 @@ button:focus-visible {
     ),
     #0a0908;
 }
-
-/* GRAIN */
 
 .grain {
   position: fixed;
@@ -60,27 +57,19 @@ button:focus-visible {
 
 .background-glow {
   position: absolute;
-
   width: 500px;
   height: 500px;
-
   left: 50%;
   top: 50%;
-
   transform: translate(-50%, -50%);
-
   border-radius: 50%;
-
   background: rgba(255, 110, 35, 0.045);
-
   filter: blur(100px);
-
   transition: 1.5s ease;
 }
 
 .lit .background-glow {
   background: rgba(255, 105, 35, 0.11);
-
   transform:
     translate(-50%, -50%)
     scale(1.25);
@@ -90,51 +79,66 @@ button:focus-visible {
 
 .top-bar {
   position: relative;
-  z-index: 5;
-
+  z-index: 10;
   height: 82px;
-
   padding: 0 5vw;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.wordmark {
+.wordmark-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #eee7dc;
   font-size: 20px;
   letter-spacing: -0.5px;
+  cursor: pointer;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.top-nav-button {
+  border: 0;
+  background: transparent;
+  color: #5d5751;
+  cursor: pointer;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: 0.25s ease;
+}
+
+.top-nav-button:hover,
+.top-nav-button.active {
+  color: #bca18a;
 }
 
 .profile-button {
   width: 38px;
   height: 38px;
-
   border: 1px solid rgba(255, 255, 255, 0.1);
-
   border-radius: 50%;
-
   background: rgba(255, 255, 255, 0.025);
-
   color: #a9a095;
-
   cursor: pointer;
-
   transition: 0.3s ease;
 }
 
 .profile-button:hover {
   transform: rotate(20deg);
-
-  border-color:
-    rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* WORLD */
 
 .bonfire-world {
   position: relative;
-
   min-height: calc(100vh - 130px);
 }
 
@@ -142,37 +146,25 @@ button:focus-visible {
 
 .intro-copy {
   position: absolute;
-
-  top: 8%;
+  top: 7%;
   left: 7vw;
-
-  z-index: 3;
+  z-index: 4;
 }
 
 .eyebrow {
   display: block;
-
   margin-bottom: 15px;
-
   color: #777067;
-
   font-size: 10px;
-
   letter-spacing: 0.18em;
-
   text-transform: uppercase;
 }
 
 .intro-copy h1 {
   margin: 0;
-
-  font-size:
-    clamp(32px, 4vw, 58px);
-
+  font-size: clamp(32px, 4vw, 58px);
   line-height: 0.98;
-
   font-weight: 400;
-
   letter-spacing: -3px;
 }
 
@@ -180,15 +172,10 @@ button:focus-visible {
 
 .fire-scene {
   position: absolute;
-
   left: 50%;
   top: 48%;
-
-  transform:
-    translate(-50%, -50%);
-
+  transform: translate(-50%, -50%);
   z-index: 4;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -196,129 +183,83 @@ button:focus-visible {
 
 .fire {
   position: relative;
-
   width: 180px;
   height: 210px;
-
   border: 0;
-
   background: transparent;
-
   cursor: pointer;
 }
 
 .fire-halo {
   position: absolute;
-
   left: 50%;
   bottom: 15px;
-
   width: 120px;
   height: 80px;
-
-  transform:
-    translateX(-50%);
-
+  transform: translateX(-50%);
   border-radius: 50%;
-
-  background:
-    rgba(255, 117, 45, 0.12);
-
+  background: rgba(255, 117, 45, 0.12);
   filter: blur(30px);
-
   transition: 0.7s ease;
 }
 
 .flame {
   position: absolute;
-
   left: 50%;
   bottom: 35px;
-
-  transform-origin:
-    bottom center;
-
-  border-radius:
-    50% 50% 42% 42%;
-
+  transform-origin: bottom center;
+  border-radius: 50% 50% 42% 42%;
   transition: 0.4s ease;
 }
 
 .flame-back {
   width: 75px;
   height: 120px;
-
   margin-left: -37px;
-
   background: #7e3019;
-
   transform: rotate(-15deg);
-
   animation:
-    fireMove 1.7s ease-in-out
-    infinite alternate;
+    fireMove 1.7s ease-in-out infinite alternate;
 }
 
 .flame-main {
   width: 68px;
   height: 130px;
-
   margin-left: -34px;
-
   background: #d85d24;
-
   transform: rotate(7deg);
-
   animation:
-    fireMove 1.25s ease-in-out
-    infinite alternate-reverse;
+    fireMove 1.25s ease-in-out infinite alternate-reverse;
 }
 
 .flame-front {
   width: 40px;
   height: 88px;
-
   margin-left: -20px;
-
   bottom: 38px;
-
   background: #f1b15e;
-
   animation:
-    fireMove 1s ease-in-out
-    infinite alternate;
+    fireMove 1s ease-in-out infinite alternate;
 }
 
 .fire-core {
   position: absolute;
-
   left: 50%;
   bottom: 45px;
-
   width: 18px;
   height: 50px;
-
   margin-left: -9px;
-
-  border-radius:
-    50% 50% 40% 40%;
-
+  border-radius: 50% 50% 40% 40%;
   background: #fff0c7;
-
   filter: blur(1px);
 }
 
 .fire-label {
   margin-top: -12px;
-
   color: #756d63;
-
   font-size: 10px;
-
   letter-spacing: 0.15em;
-
   text-transform: uppercase;
-
   transition: 0.4s ease;
 }
 
@@ -338,13 +279,120 @@ button:focus-visible {
   color: #bd8761;
 }
 
+/* PEOPLE AROUND FIRE */
+
+.people-orbit {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.person-orb {
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  border: 0;
+  background: transparent;
+
+  color: #eee7dc;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform 0.4s ease;
+}
+
+.person-one {
+  left: 34%;
+  top: 24%;
+}
+
+.person-two {
+  right: 27%;
+  top: 30%;
+}
+
+.person-three {
+  left: 31%;
+  bottom: 12%;
+}
+
+.person-orb:hover {
+  transform: scale(1.08);
+}
+
+.person-glow {
+  position: absolute;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+
+  background: rgba(205, 124, 73, 0.09);
+
+  filter: blur(14px);
+}
+
+.person-letter {
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.13);
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #b9a99b;
+
+  font-family: Georgia, serif;
+
+  font-size: 14px;
+}
+
+.person-name {
+  margin-top: 8px;
+
+  font-family: Georgia, serif;
+
+  font-size: 12px;
+}
+
+.person-status {
+  margin-top: 3px;
+
+  color: #5f5953;
+
+  font-size: 8px;
+
+  letter-spacing: 0.05em;
+}
+
 /* MEMORY CARDS */
 
 .memories {
   position: absolute;
-
   inset: 0;
-
   pointer-events: none;
 }
 
@@ -358,25 +406,19 @@ button:focus-visible {
 
   display: flex;
   flex-direction: column;
-
   align-items: flex-start;
-
   justify-content: flex-end;
 
   border: 0;
 
   cursor: pointer;
-
   pointer-events: auto;
 
   color: #25211d;
 
   box-shadow:
-    0 20px 50px
-    rgba(0, 0, 0, 0.3),
-
-    0 2px 4px
-    rgba(0, 0, 0, 0.2);
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.2);
 
   transition:
     transform 0.45s ease,
@@ -389,8 +431,7 @@ button:focus-visible {
     rotate(0deg) !important;
 
   box-shadow:
-    0 30px 70px
-    rgba(0, 0, 0, 0.45);
+    0 30px 70px rgba(0, 0, 0, 0.45);
 }
 
 .memory-card.photo {
@@ -408,58 +449,225 @@ button:focus-visible {
 .memory-one {
   left: 8vw;
   top: 42%;
-
   transform: rotate(-7deg);
 }
 
 .memory-two {
-  right: 10vw;
-  top: 24%;
-
+  right: 8vw;
+  top: 21%;
   transform: rotate(6deg);
 }
 
 .memory-three {
-  right: 13vw;
-  bottom: 13%;
-
+  right: 12vw;
+  bottom: 11%;
   transform: rotate(-4deg);
 }
 
 .memory-four {
-  left: 18vw;
-  bottom: 8%;
-
+  left: 17vw;
+  bottom: 7%;
   transform: rotate(5deg);
 }
 
 .memory-mark {
   position: absolute;
-
   top: 15px;
   left: 17px;
-
   font-size: 18px;
-
   opacity: 0.65;
 }
 
 .memory-title {
   font-family: Georgia, serif;
-
   font-size: 17px;
 }
 
 .memory-text {
   margin-top: 5px;
+  font-family: Georgia, serif;
+  font-size: 11px;
+  line-height: 1.4;
+  opacity: 0.65;
+}
+
+/* PEOPLE PAGE */
+
+.people-page {
+  position: absolute;
+
+  left: 50%;
+  top: 48%;
+
+  width: min(700px, 82vw);
+
+  transform:
+    translate(-50%, -50%);
+
+  z-index: 5;
+}
+
+.people-heading {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  margin-bottom: 25px;
+}
+
+.people-heading span {
+  color: #aaa097;
 
   font-family: Georgia, serif;
 
-  font-size: 11px;
+  font-size: 19px;
+}
 
-  line-height: 1.4;
+.people-heading small {
+  color: #5c5650;
 
-  opacity: 0.65;
+  font-size: 9px;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+.people-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+.person-card {
+  position: relative;
+
+  min-height: 150px;
+
+  padding: 22px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: #eee7dc;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+.person-card:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(213, 145, 98, 0.35);
+
+  background:
+    rgba(255, 255, 255, 0.045);
+}
+
+.person-card-avatar {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 50%;
+
+  color: #b99f89;
+
+  font-family: Georgia, serif;
+}
+
+.person-card-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.person-card-info strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.person-card-info span {
+  color: #68615a;
+
+  font-size: 10px;
+}
+
+.person-card-info small {
+  color: #8d684e;
+
+  font-size: 9px;
+}
+
+.person-card-arrow {
+  position: absolute;
+
+  right: 18px;
+  bottom: 18px;
+
+  color: #625a53;
+
+  transition: 0.25s ease;
+}
+
+.person-card:hover .person-card-arrow {
+  transform: translateX(4px);
+
+  color: #b28a6c;
+}
+
+.invite-button {
+  margin-top: 20px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #756b63;
+
+  cursor: pointer;
+
+  font-size: 10px;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+.invite-button:hover {
+  color: #b6977d;
 }
 
 /* FOOTER */
@@ -467,7 +675,7 @@ button:focus-visible {
 .bottom-bar {
   position: fixed;
 
-  z-index: 5;
+  z-index: 10;
 
   left: 5vw;
   right: 5vw;
@@ -504,7 +712,8 @@ button:focus-visible {
 
 /* MEMORY POPUP */
 
-.memory-overlay {
+.memory-overlay,
+.person-overlay {
   position: fixed;
 
   inset: 0;
@@ -514,7 +723,6 @@ button:focus-visible {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   background:
@@ -540,7 +748,6 @@ button:focus-visible {
   flex-direction: column;
 
   align-items: center;
-
   justify-content: center;
 
   text-align: center;
@@ -550,8 +757,7 @@ button:focus-visible {
   color: #29251f;
 
   box-shadow:
-    0 40px 100px
-    rgba(0, 0, 0, 0.5);
+    0 40px 100px rgba(0, 0, 0, 0.5);
 
   animation:
     detailIn 0.5s ease;
@@ -584,7 +790,6 @@ button:focus-visible {
 
 .detail-mark {
   font-size: 34px;
-
   opacity: 0.7;
 }
 
@@ -618,6 +823,131 @@ button:focus-visible {
   opacity: 0.45;
 }
 
+/* PERSON POPUP */
+
+.person-detail {
+  position: relative;
+
+  width: min(400px, 88vw);
+
+  padding: 45px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(214, 116, 52, 0.09),
+      transparent 45%
+    ),
+    #11100e;
+
+  box-shadow:
+    0 40px 100px
+    rgba(0, 0, 0, 0.6);
+
+  animation:
+    detailIn 0.45s ease;
+}
+
+.person-detail-avatar {
+  width: 75px;
+  height: 75px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 50%;
+
+  color: #c2aa94;
+
+  font-family: Georgia, serif;
+
+  font-size: 25px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+.person-detail-status {
+  margin-top: 18px;
+
+  color: #9b7256;
+
+  font-size: 9px;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+.person-detail h2 {
+  margin: 10px 0 3px;
+
+  font-family: Georgia, serif;
+
+  font-size: 31px;
+
+  font-weight: 400;
+}
+
+.person-detail-username {
+  color: #655f59;
+
+  font-size: 11px;
+}
+
+.person-detail p {
+  margin: 25px 0;
+
+  color: #756e67;
+
+  font-family: Georgia, serif;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.message-button {
+  width: 100%;
+
+  padding: 14px;
+
+  border: 0;
+
+  background: #e9dfd1;
+
+  color: #191613;
+
+  cursor: pointer;
+
+  transition:
+    0.25s ease;
+}
+
+.message-button:hover {
+  background: #fff4e4;
+
+  transform: translateY(-2px);
+}
+
 /* IDENTITY */
 
 .identity-overlay {
@@ -630,7 +960,6 @@ button:focus-visible {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   padding: 24px;
@@ -810,11 +1139,6 @@ button:focus-visible {
     translateY(-2px);
 }
 
-.continue-button:active {
-  transform:
-    translateY(0);
-}
-
 .identity-card small {
   display: block;
 
@@ -839,7 +1163,6 @@ button:focus-visible {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   padding: 24px;
@@ -889,7 +1212,6 @@ button:focus-visible {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   border-radius: 50%;
@@ -913,8 +1235,7 @@ button:focus-visible {
 
   background: #e48745;
 
-  transform:
-    rotate(45deg);
+  transform: rotate(45deg);
 
   animation:
     privacyFlame 1.2s
@@ -1023,7 +1344,6 @@ button:focus-visible {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   flex-shrink: 0;
@@ -1076,7 +1396,8 @@ button:focus-visible {
   transition: 0.25s ease;
 }
 
-.privacy-option.selected .option-radio {
+.privacy-option.selected
+.option-radio {
   border-color: #d08a55;
 
   box-shadow:
@@ -1109,10 +1430,6 @@ button:focus-visible {
   background: #fff4e4;
 
   transform: translateY(-2px);
-}
-
-.enter-fire-button:active {
-  transform: translateY(0);
 }
 
 .privacy-note {
@@ -1255,14 +1572,27 @@ button:focus-visible {
   }
 
   .fire-scene {
-    top: 47%;
+    top: 50%;
+  }
+
+  .person-one {
+    left: 7%;
+    top: 28%;
+  }
+
+  .person-two {
+    right: 5%;
+    top: 31%;
+  }
+
+  .person-three {
+    left: 9%;
+    bottom: 20%;
   }
 
   .memory-card {
-    width: 130px;
-
-    min-height: 105px;
-
+    width: 125px;
+    min-height: 100px;
     padding: 14px;
   }
 
@@ -1271,23 +1601,55 @@ button:focus-visible {
   }
 
   .memory-one {
-    left: 5%;
-    top: 35%;
+    left: 3%;
+    top: 42%;
   }
 
   .memory-two {
-    right: 5%;
-    top: 25%;
+    right: 3%;
+    top: 20%;
   }
 
   .memory-three {
     right: 4%;
-    bottom: 17%;
+    bottom: 11%;
   }
 
   .memory-four {
-    left: 5%;
-    bottom: 12%;
+    left: 4%;
+    bottom: 8%;
+  }
+
+  .people-page {
+    width: 90vw;
+  }
+
+  .people-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .person-card {
+    min-height: 110px;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    gap: 15px;
+  }
+
+  .person-card-arrow {
+    top: 50%;
+    bottom: auto;
+
+    transform:
+      translateY(-50%);
+  }
+
+  .person-card:hover .person-card-arrow {
+    transform:
+      translateY(-50%)
+      translateX(4px);
   }
 }
 
