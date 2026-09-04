@@ -19,6 +19,12 @@ type Person = {
   symbol: string;
 };
 
+type ChatMessage = {
+  id: number;
+  text: string;
+  from: "me" | "them";
+};
+
 const memories: Memory[] = [
   {
     id: 1,
@@ -77,6 +83,35 @@ const people: Person[] = [
   },
 ];
 
+const initialChats: Record<number, ChatMessage[]> = {
+  1: [
+    {
+      id: 1,
+      text: "hey 👋",
+      from: "them",
+    },
+    {
+      id: 2,
+      text: "you finally found the fire.",
+      from: "them",
+    },
+  ],
+  2: [
+    {
+      id: 1,
+      text: "yo bro 🔥",
+      from: "them",
+    },
+  ],
+  3: [
+    {
+      id: 1,
+      text: "hii",
+      from: "them",
+    },
+  ],
+};
+
 function App() {
   const [lit, setLit] = useState(false);
 
@@ -107,15 +142,19 @@ function App() {
   const [activeView, setActiveView] =
     useState<"fire" | "people">("fire");
 
-  /*
-   * People who are currently allowed
-   * to see this Bonfire.
-   *
-   * This is intentionally local for now.
-   * Later we'll connect this to the backend.
-   */
   const [visiblePeople, setVisiblePeople] =
     useState<number[]>([1, 2]);
+
+  const [chattingWith, setChattingWith] =
+    useState<Person | null>(null);
+
+  const [chatMessages, setChatMessages] =
+    useState<Record<number, ChatMessage[]>>(
+      initialChats
+    );
+
+  const [messageText, setMessageText] =
+    useState("");
 
   function continueToPrivacy() {
     if (
@@ -155,10 +194,6 @@ function App() {
         : [...current, personId]
     );
 
-    /*
-     * Selecting individual people means
-     * the Bonfire is using chosen privacy.
-     */
     setPrivacy("chosen");
   }
 
@@ -182,6 +217,59 @@ function App() {
     } can see you`;
   }
 
+  function openConversation(person: Person) {
+    setChattingWith(person);
+    setSelectedPerson(null);
+    setMessageText("");
+  }
+
+  function closeConversation() {
+    setChattingWith(null);
+    setMessageText("");
+  }
+
+  function sendMessage() {
+    if (
+      !chattingWith ||
+      !messageText.trim()
+    ) {
+      return;
+    }
+
+    const newMessage: ChatMessage = {
+      id: Date.now(),
+      text: messageText.trim(),
+      from: "me",
+    };
+
+    setChatMessages((current) => ({
+      ...current,
+      [chattingWith.id]: [
+        ...(current[chattingWith.id] || []),
+        newMessage,
+      ],
+    }));
+
+    setMessageText("");
+
+    // Small local prototype response.
+    setTimeout(() => {
+      const reply: ChatMessage = {
+        id: Date.now() + 1,
+        text: "that's nice 🔥",
+        from: "them",
+      };
+
+      setChatMessages((current) => ({
+        ...current,
+        [chattingWith.id]: [
+          ...(current[chattingWith.id] || []),
+          reply,
+        ],
+      }));
+    }, 900);
+  }
+
   return (
     <main
       className={`bonfire-page ${
@@ -197,7 +285,9 @@ function App() {
       <header className="top-bar">
         <button
           className="wordmark-button"
-          onClick={() => setActiveView("fire")}
+          onClick={() =>
+            setActiveView("fire")
+          }
         >
           bonfire
         </button>
@@ -289,7 +379,9 @@ function App() {
             <div className="fire-scene">
               <button
                 className="fire"
-                onClick={() => setLit(!lit)}
+                onClick={() =>
+                  setLit(!lit)
+                }
                 aria-label="Light the Bonfire"
               >
                 <span className="fire-halo" />
@@ -424,7 +516,9 @@ function App() {
       {selected && (
         <div
           className="memory-overlay"
-          onClick={() => setSelected(null)}
+          onClick={() =>
+            setSelected(null)
+          }
         >
           <div
             className={`memory-detail ${
@@ -436,17 +530,22 @@ function App() {
           >
             <button
               className="close-button"
-              onClick={() => setSelected(null)}
+              onClick={() =>
+                setSelected(null)
+              }
             >
               ×
             </button>
 
             <span className="detail-mark">
-              {selected.type === "photo" && "▧"}
+              {selected.type === "photo" &&
+                "▧"}
 
-              {selected.type === "note" && "✉"}
+              {selected.type === "note" &&
+                "✉"}
 
-              {selected.type === "song" && "♪"}
+              {selected.type === "song" &&
+                "♪"}
             </span>
 
             <h2>{selected.title}</h2>
@@ -506,13 +605,142 @@ function App() {
             <button
               className="message-button"
               onClick={() =>
-                alert(
-                  `Messaging ${selectedPerson.name} will be connected next.`
+                openConversation(
+                  selectedPerson
                 )
               }
             >
               open conversation
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* CHAT */}
+
+      {chattingWith && (
+        <div
+          className="person-overlay"
+          onClick={closeConversation}
+        >
+          <div
+            className="person-detail"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <button
+              className="close-button"
+              onClick={closeConversation}
+            >
+              ×
+            </button>
+
+            <div className="person-detail-avatar">
+              {chattingWith.symbol}
+            </div>
+
+            <span className="person-detail-status">
+              ● {chattingWith.status}
+            </span>
+
+            <h2>
+              {chattingWith.name}
+            </h2>
+
+            <span className="person-detail-username">
+              @{chattingWith.username}
+            </span>
+
+            <div
+              style={{
+                marginTop: "24px",
+                maxHeight: "260px",
+                overflowY: "auto",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                padding: "4px",
+              }}
+            >
+              {(chatMessages[
+                chattingWith.id
+              ] || []).map((message) => (
+                <div
+                  key={message.id}
+                  style={{
+                    alignSelf:
+                      message.from === "me"
+                        ? "flex-end"
+                        : "flex-start",
+                    maxWidth: "78%",
+                    padding:
+                      "10px 13px",
+                    borderRadius: "14px",
+                    background:
+                      message.from === "me"
+                        ? "#e9dfd1"
+                        : "rgba(255,255,255,0.06)",
+                    color:
+                      message.from === "me"
+                        ? "#191613"
+                        : "#eee7dc",
+                    fontSize: "13px",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {message.text}
+                </div>
+              ))}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                marginTop: "18px",
+              }}
+            >
+              <input
+                value={messageText}
+                onChange={(event) =>
+                  setMessageText(
+                    event.target.value
+                  )
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    sendMessage();
+                  }
+                }}
+                placeholder="say something..."
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  padding: "12px 13px",
+                  border:
+                    "1px solid #38322c",
+                  outline: "none",
+                  background:
+                    "rgba(255,255,255,0.04)",
+                  color: "#eee7dc",
+                  fontFamily: "inherit",
+                }}
+              />
+
+              <button
+                onClick={sendMessage}
+                style={{
+                  padding: "0 16px",
+                  border: 0,
+                  background: "#e9dfd1",
+                  color: "#191613",
+                  cursor: "pointer",
+                }}
+              >
+                send
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -595,7 +823,6 @@ function App() {
       {showPrivacy && (
         <div className="privacy-overlay">
           <div className="privacy-card">
-
             <div className="privacy-fire">
               <span className="privacy-flame" />
             </div>
@@ -613,10 +840,7 @@ function App() {
               You do.
             </p>
 
-            {/* GLOBAL PRIVACY */}
-
             <div className="privacy-options">
-
               <button
                 className={`privacy-option ${
                   privacy === "everyone"
@@ -699,14 +923,10 @@ function App() {
 
                 <span className="option-radio" />
               </button>
-
             </div>
-
-            {/* CHOSEN PEOPLE */}
 
             {privacy === "chosen" && (
               <div className="chosen-people">
-
                 <div className="chosen-people-heading">
                   <span>
                     people who can see you
@@ -718,7 +938,6 @@ function App() {
                 </div>
 
                 <div className="chosen-people-list">
-
                   {people.map((person) => {
                     const isVisible =
                       visiblePeople.includes(
@@ -734,16 +953,16 @@ function App() {
                             : "hidden"
                         }`}
                         onClick={() =>
-                          togglePerson(person.id)
+                          togglePerson(
+                            person.id
+                          )
                         }
                       >
-
                         <span className="chosen-avatar">
                           {person.symbol}
                         </span>
 
                         <span className="chosen-info">
-
                           <strong>
                             {person.name}
                           </strong>
@@ -753,7 +972,6 @@ function App() {
                               ? "can see + message"
                               : "can't see you"}
                           </small>
-
                         </span>
 
                         <span className="chosen-toggle">
@@ -761,11 +979,9 @@ function App() {
                             ? "●"
                             : "○"}
                         </span>
-
                       </button>
                     );
                   })}
-
                 </div>
 
                 <button
@@ -778,11 +994,8 @@ function App() {
                 >
                   + add someone to your fire
                 </button>
-
               </div>
             )}
-
-            {/* CURRENT PRIVACY STATUS */}
 
             <div className="privacy-status-line">
               <span className="privacy-status-dot" />
@@ -805,7 +1018,6 @@ function App() {
               You can change this whenever you
               want.
             </small>
-
           </div>
         </div>
       )}
