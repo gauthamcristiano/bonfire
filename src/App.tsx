@@ -107,6 +107,16 @@ function App() {
   const [activeView, setActiveView] =
     useState<"fire" | "people">("fire");
 
+  /*
+   * People who are currently allowed
+   * to see this Bonfire.
+   *
+   * This is intentionally local for now.
+   * Later we'll connect this to the backend.
+   */
+  const [visiblePeople, setVisiblePeople] =
+    useState<number[]>([1, 2]);
+
   function continueToPrivacy() {
     if (
       !displayName.trim() ||
@@ -134,6 +144,42 @@ function App() {
 
   function selectPerson(person: Person) {
     setSelectedPerson(person);
+  }
+
+  function togglePerson(personId: number) {
+    setVisiblePeople((current) =>
+      current.includes(personId)
+        ? current.filter(
+            (id) => id !== personId
+          )
+        : [...current, personId]
+    );
+
+    /*
+     * Selecting individual people means
+     * the Bonfire is using chosen privacy.
+     */
+    setPrivacy("chosen");
+  }
+
+  function getPrivacyDescription() {
+    if (privacy === "everyone") {
+      return "everyone can find you";
+    }
+
+    if (privacy === "nobody") {
+      return "your Bonfire is completely hidden";
+    }
+
+    if (visiblePeople.length === 0) {
+      return "nobody can currently see you";
+    }
+
+    return `${visiblePeople.length} ${
+      visiblePeople.length === 1
+        ? "person"
+        : "people"
+    } can see you`;
   }
 
   return (
@@ -367,11 +413,7 @@ function App() {
 
       <footer className="bottom-bar">
         <span>
-          {privacy === "everyone"
-            ? "your fire is open"
-            : privacy === "chosen"
-              ? "only your chosen people"
-              : "your fire is quiet"}
+          {getPrivacyDescription()}
         </span>
 
         <span className="status-dot" />
@@ -553,6 +595,7 @@ function App() {
       {showPrivacy && (
         <div className="privacy-overlay">
           <div className="privacy-card">
+
             <div className="privacy-fire">
               <span className="privacy-flame" />
             </div>
@@ -561,7 +604,7 @@ function App() {
               your fire · your rules
             </span>
 
-            <h2>Who can find you?</h2>
+            <h2>Who can see you?</h2>
 
             <p className="privacy-intro">
               Bonfire doesn't decide who gets
@@ -570,7 +613,10 @@ function App() {
               You do.
             </p>
 
+            {/* GLOBAL PRIVACY */}
+
             <div className="privacy-options">
+
               <button
                 className={`privacy-option ${
                   privacy === "everyone"
@@ -591,7 +637,8 @@ function App() {
                   </strong>
 
                   <small>
-                    Anyone can discover you.
+                    Anyone can discover and
+                    message you.
                   </small>
                 </span>
 
@@ -618,7 +665,7 @@ function App() {
                   </strong>
 
                   <small>
-                    Only people you allow can
+                    Only selected people can
                     find and message you.
                   </small>
                 </span>
@@ -641,7 +688,9 @@ function App() {
                 </span>
 
                 <span className="option-content">
-                  <strong>Nobody</strong>
+                  <strong>
+                    Nobody
+                  </strong>
 
                   <small>
                     Your Bonfire stays hidden.
@@ -650,19 +699,113 @@ function App() {
 
                 <span className="option-radio" />
               </button>
+
+            </div>
+
+            {/* CHOSEN PEOPLE */}
+
+            {privacy === "chosen" && (
+              <div className="chosen-people">
+
+                <div className="chosen-people-heading">
+                  <span>
+                    people who can see you
+                  </span>
+
+                  <small>
+                    tap to change
+                  </small>
+                </div>
+
+                <div className="chosen-people-list">
+
+                  {people.map((person) => {
+                    const isVisible =
+                      visiblePeople.includes(
+                        person.id
+                      );
+
+                    return (
+                      <button
+                        key={person.id}
+                        className={`chosen-person ${
+                          isVisible
+                            ? "visible"
+                            : "hidden"
+                        }`}
+                        onClick={() =>
+                          togglePerson(person.id)
+                        }
+                      >
+
+                        <span className="chosen-avatar">
+                          {person.symbol}
+                        </span>
+
+                        <span className="chosen-info">
+
+                          <strong>
+                            {person.name}
+                          </strong>
+
+                          <small>
+                            {isVisible
+                              ? "can see + message"
+                              : "can't see you"}
+                          </small>
+
+                        </span>
+
+                        <span className="chosen-toggle">
+                          {isVisible
+                            ? "●"
+                            : "○"}
+                        </span>
+
+                      </button>
+                    );
+                  })}
+
+                </div>
+
+                <button
+                  className="add-person-button"
+                  onClick={() =>
+                    alert(
+                      "Adding new people will be connected to Bonfire accounts later."
+                    )
+                  }
+                >
+                  + add someone to your fire
+                </button>
+
+              </div>
+            )}
+
+            {/* CURRENT PRIVACY STATUS */}
+
+            <div className="privacy-status-line">
+              <span className="privacy-status-dot" />
+
+              <span>
+                {getPrivacyDescription()}
+              </span>
             </div>
 
             <button
               className="enter-fire-button"
               onClick={enterBonfire}
             >
-              Enter my Bonfire
+              {profileCreated
+                ? "Save privacy"
+                : "Enter my Bonfire"}
             </button>
 
             <small className="privacy-note">
               You can change this whenever you
               want.
             </small>
+
           </div>
         </div>
       )}
