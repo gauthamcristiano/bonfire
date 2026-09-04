@@ -10,6 +10,15 @@ type Memory = {
 
 type PrivacyOption = "everyone" | "chosen" | "nobody";
 
+type Person = {
+  id: number;
+  name: string;
+  username: string;
+  status: string;
+  position: string;
+  symbol: string;
+};
+
 const memories: Memory[] = [
   {
     id: 1,
@@ -41,15 +50,53 @@ const memories: Memory[] = [
   },
 ];
 
+const people: Person[] = [
+  {
+    id: 1,
+    name: "Mia",
+    username: "mia",
+    status: "online",
+    position: "person-one",
+    symbol: "M",
+  },
+  {
+    id: 2,
+    name: "Arjun",
+    username: "arjun",
+    status: "last seen 4m ago",
+    position: "person-two",
+    symbol: "A",
+  },
+  {
+    id: 3,
+    name: "Nila",
+    username: "nila",
+    status: "online",
+    position: "person-three",
+    symbol: "N",
+  },
+];
+
 function App() {
   const [lit, setLit] = useState(false);
-  const [selected, setSelected] = useState<Memory | null>(null);
 
-  const [showIdentity, setShowIdentity] = useState(true);
-  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [selected, setSelected] =
+    useState<Memory | null>(null);
 
-  const [displayName, setDisplayName] = useState("");
-  const [username, setUsername] = useState("");
+  const [selectedPerson, setSelectedPerson] =
+    useState<Person | null>(null);
+
+  const [showIdentity, setShowIdentity] =
+    useState(true);
+
+  const [showPrivacy, setShowPrivacy] =
+    useState(false);
+
+  const [displayName, setDisplayName] =
+    useState("");
+
+  const [username, setUsername] =
+    useState("");
 
   const [privacy, setPrivacy] =
     useState<PrivacyOption>("chosen");
@@ -57,8 +104,14 @@ function App() {
   const [profileCreated, setProfileCreated] =
     useState(false);
 
+  const [activeView, setActiveView] =
+    useState<"fire" | "people">("fire");
+
   function continueToPrivacy() {
-    if (!displayName.trim() || !username.trim()) {
+    if (
+      !displayName.trim() ||
+      !username.trim()
+    ) {
       return;
     }
 
@@ -79,28 +132,60 @@ function App() {
     }
   }
 
+  function selectPerson(person: Person) {
+    setSelectedPerson(person);
+  }
+
   return (
-    <main className={`bonfire-page ${lit ? "lit" : ""}`}>
+    <main
+      className={`bonfire-page ${
+        lit ? "lit" : ""
+      }`}
+    >
       <div className="grain" />
+
       <div className="background-glow" />
 
       {/* HEADER */}
 
       <header className="top-bar">
-        <div className="wordmark">bonfire</div>
-
         <button
-          className="profile-button"
-          aria-label="Profile"
-          onClick={openProfile}
+          className="wordmark-button"
+          onClick={() => setActiveView("fire")}
         >
-          ✦
+          bonfire
         </button>
+
+        <div className="top-actions">
+          <button
+            className={`top-nav-button ${
+              activeView === "people"
+                ? "active"
+                : ""
+            }`}
+            onClick={() =>
+              setActiveView("people")
+            }
+          >
+            people
+          </button>
+
+          <button
+            className="profile-button"
+            aria-label="Profile"
+            onClick={openProfile}
+          >
+            ✦
+          </button>
+        </div>
       </header>
 
       {/* MAIN WORLD */}
 
       <section className="bonfire-world">
+
+        {/* INTRO */}
+
         <div className="intro-copy">
           <span className="eyebrow">
             {profileCreated
@@ -110,83 +195,189 @@ function App() {
 
           <h1>
             {profileCreated && displayName
-              ? `Welcome, ${displayName}.`
+              ? `Hey, ${displayName}.`
               : "Stay close."}
 
             <br />
 
-            {profileCreated
-              ? "Your fire is yours."
+            {activeView === "people"
+              ? "Your people are here."
               : "Stay private."}
           </h1>
         </div>
 
-        {/* FIRE */}
+        {/* FIRE VIEW */}
 
-        <div className="fire-scene">
-          <button
-            className="fire"
-            onClick={() => setLit(!lit)}
-            aria-label="Light the Bonfire"
-          >
-            <span className="fire-halo" />
-            <span className="flame flame-back" />
-            <span className="flame flame-main" />
-            <span className="flame flame-front" />
-            <span className="fire-core" />
-          </button>
+        {activeView === "fire" && (
+          <>
+            {/* PEOPLE AROUND FIRE */}
 
-          <span className="fire-label">
-            {lit
-              ? "the fire is warm"
-              : "touch the fire"}
-          </span>
-        </div>
+            <div className="people-orbit">
+              {people.map((person) => (
+                <button
+                  key={person.id}
+                  className={`person-orb ${person.position}`}
+                  onClick={() =>
+                    selectPerson(person)
+                  }
+                >
+                  <span className="person-glow" />
 
-        {/* MEMORIES */}
+                  <span className="person-letter">
+                    {person.symbol}
+                  </span>
 
-        <div className="memories">
-          {memories.map((memory) => (
+                  <span className="person-name">
+                    {person.name}
+                  </span>
+
+                  <span className="person-status">
+                    {person.status}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* FIRE */}
+
+            <div className="fire-scene">
+              <button
+                className="fire"
+                onClick={() => setLit(!lit)}
+                aria-label="Light the Bonfire"
+              >
+                <span className="fire-halo" />
+
+                <span className="flame flame-back" />
+
+                <span className="flame flame-main" />
+
+                <span className="flame flame-front" />
+
+                <span className="fire-core" />
+              </button>
+
+              <span className="fire-label">
+                {lit
+                  ? "the fire is warm"
+                  : "touch the fire"}
+              </span>
+            </div>
+
+            {/* MEMORY CARDS */}
+
+            <div className="memories">
+              {memories.map((memory) => (
+                <button
+                  key={memory.id}
+                  className={`memory-card ${
+                    memory.position
+                  } ${memory.type}`}
+                  onClick={() =>
+                    setSelected(memory)
+                  }
+                >
+                  <span className="memory-mark">
+                    {memory.type === "photo" &&
+                      "▧"}
+
+                    {memory.type === "note" &&
+                      "✉"}
+
+                    {memory.type === "song" &&
+                      "♪"}
+                  </span>
+
+                  <span className="memory-title">
+                    {memory.title}
+                  </span>
+
+                  <span className="memory-text">
+                    {memory.text}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* PEOPLE VIEW */}
+
+        {activeView === "people" && (
+          <div className="people-page">
+            <div className="people-heading">
+              <span>
+                people around your fire
+              </span>
+
+              <small>
+                only people you've allowed
+              </small>
+            </div>
+
+            <div className="people-grid">
+              {people.map((person) => (
+                <button
+                  key={person.id}
+                  className="person-card"
+                  onClick={() =>
+                    selectPerson(person)
+                  }
+                >
+                  <div className="person-card-avatar">
+                    {person.symbol}
+                  </div>
+
+                  <div className="person-card-info">
+                    <strong>
+                      {person.name}
+                    </strong>
+
+                    <span>
+                      @{person.username}
+                    </span>
+
+                    <small>
+                      {person.status}
+                    </small>
+                  </div>
+
+                  <span className="person-card-arrow">
+                    →
+                  </span>
+                </button>
+              ))}
+            </div>
+
             <button
-              key={memory.id}
-              className={`memory-card ${memory.position} ${memory.type}`}
-              onClick={() => setSelected(memory)}
+              className="invite-button"
+              onClick={() =>
+                alert(
+                  "Invite links will be added in the next Bonfire build."
+                )
+              }
             >
-              <span className="memory-mark">
-                {memory.type === "photo" && "▧"}
-                {memory.type === "note" && "✉"}
-                {memory.type === "song" && "♪"}
-              </span>
-
-              <span className="memory-title">
-                {memory.title}
-              </span>
-
-              <span className="memory-text">
-                {memory.text}
-              </span>
+              + invite someone to your fire
             </button>
-          ))}
-        </div>
+          </div>
+        )}
       </section>
 
       {/* FOOTER */}
 
       <footer className="bottom-bar">
         <span>
-          {profileCreated
-            ? privacy === "everyone"
-              ? "your fire is open"
-              : privacy === "chosen"
-                ? "only your chosen people"
-                : "your fire is quiet"
-            : "only the people you choose"}
+          {privacy === "everyone"
+            ? "your fire is open"
+            : privacy === "chosen"
+              ? "only your chosen people"
+              : "your fire is quiet"}
         </span>
 
         <span className="status-dot" />
       </footer>
 
-      {/* MEMORY POPUP */}
+      {/* MEMORY DETAIL */}
 
       {selected && (
         <div
@@ -194,7 +385,9 @@ function App() {
           onClick={() => setSelected(null)}
         >
           <div
-            className={`memory-detail ${selected.type}`}
+            className={`memory-detail ${
+              selected.type
+            }`}
             onClick={(event) =>
               event.stopPropagation()
             }
@@ -208,7 +401,9 @@ function App() {
 
             <span className="detail-mark">
               {selected.type === "photo" && "▧"}
+
               {selected.type === "note" && "✉"}
+
               {selected.type === "song" && "♪"}
             </span>
 
@@ -223,7 +418,64 @@ function App() {
         </div>
       )}
 
-      {/* IDENTITY SCREEN */}
+      {/* PERSON DETAIL */}
+
+      {selectedPerson && (
+        <div
+          className="person-overlay"
+          onClick={() =>
+            setSelectedPerson(null)
+          }
+        >
+          <div
+            className="person-detail"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <button
+              className="close-button"
+              onClick={() =>
+                setSelectedPerson(null)
+              }
+            >
+              ×
+            </button>
+
+            <div className="person-detail-avatar">
+              {selectedPerson.symbol}
+            </div>
+
+            <span className="person-detail-status">
+              ● {selectedPerson.status}
+            </span>
+
+            <h2>{selectedPerson.name}</h2>
+
+            <span className="person-detail-username">
+              @{selectedPerson.username}
+            </span>
+
+            <p>
+              This person is part of your
+              Bonfire.
+            </p>
+
+            <button
+              className="message-button"
+              onClick={() =>
+                alert(
+                  `Messaging ${selectedPerson.name} will be connected next.`
+                )
+              }
+            >
+              open conversation
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* IDENTITY */}
 
       {showIdentity && (
         <div className="identity-overlay">
@@ -254,7 +506,9 @@ function App() {
               placeholder="Gautham"
               value={displayName}
               onChange={(event) =>
-                setDisplayName(event.target.value)
+                setDisplayName(
+                  event.target.value
+                )
               }
               autoFocus
             />
@@ -272,7 +526,9 @@ function App() {
                 placeholder="gautham"
                 value={username}
                 onChange={(event) =>
-                  setUsername(event.target.value)
+                  setUsername(
+                    event.target.value
+                  )
                 }
               />
             </div>
@@ -285,13 +541,14 @@ function App() {
             </button>
 
             <small>
-              Your username helps people find you.
+              Your username helps people find
+              you.
             </small>
           </div>
         </div>
       )}
 
-      {/* PRIVACY SCREEN */}
+      {/* PRIVACY */}
 
       {showPrivacy && (
         <div className="privacy-overlay">
@@ -329,7 +586,9 @@ function App() {
                 </span>
 
                 <span className="option-content">
-                  <strong>Everyone</strong>
+                  <strong>
+                    Everyone
+                  </strong>
 
                   <small>
                     Anyone can discover you.
@@ -354,11 +613,13 @@ function App() {
                 </span>
 
                 <span className="option-content">
-                  <strong>People you choose</strong>
+                  <strong>
+                    People you choose
+                  </strong>
 
                   <small>
-                    Only people you allow can find
-                    and message you.
+                    Only people you allow can
+                    find and message you.
                   </small>
                 </span>
 
@@ -399,7 +660,8 @@ function App() {
             </button>
 
             <small className="privacy-note">
-              You can change this whenever you want.
+              You can change this whenever you
+              want.
             </small>
           </div>
         </div>
