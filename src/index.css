@@ -36,6 +36,7 @@ button:focus-visible {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
+
   background:
     radial-gradient(
       circle at 50% 50%,
@@ -45,7 +46,7 @@ button:focus-visible {
     #0a0908;
 }
 
-/* NOSTALGIC TEXTURE */
+/* TEXTURE */
 
 .grain {
   position: fixed;
@@ -59,20 +60,30 @@ button:focus-visible {
 
 .background-glow {
   position: absolute;
+
   width: 500px;
   height: 500px;
+
   left: 50%;
   top: 50%;
+
   transform: translate(-50%, -50%);
+
   border-radius: 50%;
+
   background: rgba(255, 110, 35, 0.045);
+
   filter: blur(100px);
+
   transition: 1.5s ease;
 }
 
 .lit .background-glow {
   background: rgba(255, 105, 35, 0.11);
-  transform: translate(-50%, -50%) scale(1.25);
+
+  transform:
+    translate(-50%, -50%)
+    scale(1.25);
 }
 
 /* HEADER */
@@ -82,6 +93,7 @@ button:focus-visible {
   z-index: 5;
 
   height: 82px;
+
   padding: 0 5vw;
 
   display: flex;
@@ -99,9 +111,11 @@ button:focus-visible {
   height: 38px;
 
   border: 1px solid rgba(255, 255, 255, 0.1);
+
   border-radius: 50%;
 
   background: rgba(255, 255, 255, 0.025);
+
   color: #a9a095;
 
   cursor: pointer;
@@ -111,13 +125,16 @@ button:focus-visible {
 
 .profile-button:hover {
   transform: rotate(20deg);
-  border-color: rgba(255, 255, 255, 0.25);
+
+  border-color:
+    rgba(255, 255, 255, 0.25);
 }
 
 /* WORLD */
 
 .bonfire-world {
   position: relative;
+
   min-height: calc(100vh - 130px);
 }
 
@@ -125,27 +142,37 @@ button:focus-visible {
 
 .intro-copy {
   position: absolute;
+
   top: 8%;
   left: 7vw;
+
   z-index: 3;
 }
 
 .eyebrow {
   display: block;
+
   margin-bottom: 15px;
 
   color: #777067;
+
   font-size: 10px;
+
   letter-spacing: 0.18em;
+
   text-transform: uppercase;
 }
 
 .intro-copy h1 {
   margin: 0;
 
-  font-size: clamp(32px, 4vw, 58px);
+  font-size:
+    clamp(32px, 4vw, 58px);
+
   line-height: 0.98;
+
   font-weight: 400;
+
   letter-spacing: -3px;
 }
 
@@ -153,10 +180,12 @@ button:focus-visible {
 
 .fire-scene {
   position: absolute;
+
   left: 50%;
   top: 48%;
 
-  transform: translate(-50%, -50%);
+  transform:
+    translate(-50%, -50%);
 
   z-index: 4;
 
@@ -172,6 +201,7 @@ button:focus-visible {
   height: 210px;
 
   border: 0;
+
   background: transparent;
 
   cursor: pointer;
@@ -179,16 +209,21 @@ button:focus-visible {
 
 .fire-halo {
   position: absolute;
+
   left: 50%;
   bottom: 15px;
 
   width: 120px;
   height: 80px;
 
-  transform: translateX(-50%);
+  transform:
+    translateX(-50%);
+
   border-radius: 50%;
 
-  background: rgba(255, 117, 45, 0.12);
+  background:
+    rgba(255, 117, 45, 0.12);
+
   filter: blur(30px);
 
   transition: 0.7s ease;
@@ -196,12 +231,16 @@ button:focus-visible {
 
 .flame {
   position: absolute;
+
   left: 50%;
   bottom: 35px;
 
-  transform-origin: bottom center;
+  transform-origin:
+    bottom center;
 
-  border-radius: 50% 50% 42% 42%;
+  border-radius:
+    50% 50% 42% 42%;
+
   transition: 0.4s ease;
 }
 
@@ -214,7 +253,10 @@ button:focus-visible {
   background: #7e3019;
 
   transform: rotate(-15deg);
-  animation: fireMove 1.7s ease-in-out infinite alternate;
+
+  animation:
+    fireMove 1.7s ease-in-out
+    infinite alternate;
 }
 
 .flame-main {
@@ -226,7 +268,10 @@ button:focus-visible {
   background: #d85d24;
 
   transform: rotate(7deg);
-  animation: fireMove 1.25s ease-in-out infinite alternate-reverse;
+
+  animation:
+    fireMove 1.25s ease-in-out
+    infinite alternate-reverse;
 }
 
 .flame-front {
@@ -234,15 +279,19 @@ button:focus-visible {
   height: 88px;
 
   margin-left: -20px;
+
   bottom: 38px;
 
   background: #f1b15e;
 
-  animation: fireMove 1s ease-in-out infinite alternate;
+  animation:
+    fireMove 1s ease-in-out
+    infinite alternate;
 }
 
 .fire-core {
   position: absolute;
+
   left: 50%;
   bottom: 45px;
 
@@ -251,7 +300,9 @@ button:focus-visible {
 
   margin-left: -9px;
 
-  border-radius: 50% 50% 40% 40%;
+  border-radius:
+    50% 50% 40% 40%;
+
   background: #fff0c7;
 
   filter: blur(1px);
@@ -263,18 +314,24 @@ button:focus-visible {
   color: #756d63;
 
   font-size: 10px;
+
   letter-spacing: 0.15em;
+
   text-transform: uppercase;
 
   transition: 0.4s ease;
 }
 
 .fire:hover .fire-halo {
-  transform: translateX(-50%) scale(1.4);
+  transform:
+    translateX(-50%)
+    scale(1.4);
 }
 
 .fire:hover .flame-main {
-  transform: rotate(5deg) scale(1.08);
+  transform:
+    rotate(5deg)
+    scale(1.08);
 }
 
 .lit .fire-label {
@@ -285,7 +342,9 @@ button:focus-visible {
 
 .memories {
   position: absolute;
+
   inset: 0;
+
   pointer-events: none;
 }
 
@@ -299,19 +358,25 @@ button:focus-visible {
 
   display: flex;
   flex-direction: column;
+
   align-items: flex-start;
+
   justify-content: flex-end;
 
   border: 0;
 
   cursor: pointer;
+
   pointer-events: auto;
 
   color: #25211d;
 
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.2);
+    0 20px 50px
+    rgba(0, 0, 0, 0.3),
+
+    0 2px 4px
+    rgba(0, 0, 0, 0.2);
 
   transition:
     transform 0.45s ease,
@@ -319,10 +384,13 @@ button:focus-visible {
 }
 
 .memory-card:hover {
-  transform: translateY(-10px) rotate(0deg) !important;
+  transform:
+    translateY(-10px)
+    rotate(0deg) !important;
+
   box-shadow:
-    0 30px 70px rgba(0, 0, 0, 0.45),
-    0 3px 6px rgba(0, 0, 0, 0.2);
+    0 30px 70px
+    rgba(0, 0, 0, 0.45);
 }
 
 .memory-card.photo {
@@ -340,38 +408,45 @@ button:focus-visible {
 .memory-one {
   left: 8vw;
   top: 42%;
+
   transform: rotate(-7deg);
 }
 
 .memory-two {
   right: 10vw;
   top: 24%;
+
   transform: rotate(6deg);
 }
 
 .memory-three {
   right: 13vw;
   bottom: 13%;
+
   transform: rotate(-4deg);
 }
 
 .memory-four {
   left: 18vw;
   bottom: 8%;
+
   transform: rotate(5deg);
 }
 
 .memory-mark {
   position: absolute;
+
   top: 15px;
   left: 17px;
 
   font-size: 18px;
+
   opacity: 0.65;
 }
 
 .memory-title {
   font-family: Georgia, serif;
+
   font-size: 17px;
 }
 
@@ -379,16 +454,19 @@ button:focus-visible {
   margin-top: 5px;
 
   font-family: Georgia, serif;
+
   font-size: 11px;
+
   line-height: 1.4;
 
   opacity: 0.65;
 }
 
-/* BOTTOM */
+/* FOOTER */
 
 .bottom-bar {
   position: fixed;
+
   z-index: 5;
 
   left: 5vw;
@@ -396,66 +474,87 @@ button:focus-visible {
   bottom: 28px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   color: #55504a;
 
   font-size: 10px;
+
   letter-spacing: 0.12em;
+
   text-transform: uppercase;
 }
 
 .status-dot {
   width: 5px;
   height: 5px;
+
   margin-left: 10px;
 
   border-radius: 50%;
+
   background: #8d5d43;
 
-  animation: statusPulse 2s infinite;
+  animation:
+    statusPulse 2s infinite;
 }
 
-/* MEMORY DETAIL */
+/* MEMORY POPUP */
 
 .memory-overlay {
   position: fixed;
+
   inset: 0;
 
   z-index: 50;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  background: rgba(3, 3, 3, 0.78);
+  background:
+    rgba(3, 3, 3, 0.78);
+
   backdrop-filter: blur(14px);
 
-  animation: overlayIn 0.35s ease;
+  animation:
+    overlayIn 0.35s ease;
 }
 
 .memory-detail {
   position: relative;
 
   width: min(420px, 85vw);
+
   min-height: 300px;
 
   padding: 55px 45px 40px;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
 
   text-align: center;
 
   background: #e8dfd0;
+
   color: #29251f;
 
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 40px 100px
+    rgba(0, 0, 0, 0.5);
 
-  animation: detailIn 0.5s ease;
+  animation:
+    detailIn 0.5s ease;
 }
 
 .memory-detail.note {
@@ -468,13 +567,16 @@ button:focus-visible {
 
 .close-button {
   position: absolute;
+
   top: 16px;
   right: 18px;
 
   border: 0;
+
   background: transparent;
 
   color: inherit;
+
   font-size: 25px;
 
   cursor: pointer;
@@ -482,6 +584,7 @@ button:focus-visible {
 
 .detail-mark {
   font-size: 34px;
+
   opacity: 0.7;
 }
 
@@ -489,7 +592,9 @@ button:focus-visible {
   margin: 22px 0 8px;
 
   font-family: Georgia, serif;
+
   font-size: 32px;
+
   font-weight: 400;
 }
 
@@ -497,6 +602,7 @@ button:focus-visible {
   max-width: 280px;
 
   font-family: Georgia, serif;
+
   line-height: 1.6;
 }
 
@@ -504,24 +610,242 @@ button:focus-visible {
   margin-top: 35px;
 
   font-size: 9px;
+
   letter-spacing: 0.12em;
+
   text-transform: uppercase;
+
   opacity: 0.45;
+}
+
+/* IDENTITY */
+
+.identity-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(5, 5, 5, 0.82);
+
+  backdrop-filter: blur(18px);
+
+  animation:
+    overlayIn 0.35s ease;
+}
+
+.identity-card {
+  position: relative;
+
+  width: min(430px, 100%);
+
+  padding: 48px 42px 38px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(214, 116, 52, 0.08),
+      transparent 40%
+    ),
+    #11100e;
+
+  box-shadow:
+    0 40px 100px
+    rgba(0, 0, 0, 0.55);
+
+  animation:
+    identityIn 0.55s ease;
+}
+
+.identity-mark {
+  display: block;
+
+  margin-bottom: 28px;
+
+  font-size: 30px;
+
+  filter:
+    drop-shadow(
+      0 0 15px
+      rgba(255, 120, 40, 0.5)
+    );
+}
+
+.identity-eyebrow {
+  color: #766e66;
+
+  font-size: 9px;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+}
+
+.identity-card h2 {
+  margin: 10px 0 10px;
+
+  font-size: 36px;
+
+  font-weight: 400;
+
+  letter-spacing: -1.5px;
+}
+
+.identity-card p {
+  margin: 0 0 32px;
+
+  color: #817a72;
+
+  font-family: Georgia, serif;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+.identity-card label {
+  display: block;
+
+  margin: 18px 0 8px;
+
+  color: #716a62;
+
+  font-size: 9px;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+}
+
+.identity-card input {
+  width: 100%;
+
+  padding: 13px 14px;
+
+  border:
+    1px solid #302c28;
+
+  outline: none;
+
+  background: #0b0a09;
+
+  color: #eee7dc;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.25s ease;
+}
+
+.identity-card input:focus {
+  border-color: #806044;
+}
+
+.username-input {
+  display: flex;
+
+  align-items: center;
+
+  border:
+    1px solid #302c28;
+
+  background: #0b0a09;
+
+  transition:
+    border-color 0.25s ease;
+}
+
+.username-input:focus-within {
+  border-color: #806044;
+}
+
+.username-input span {
+  padding-left: 14px;
+
+  color: #6f675e;
+}
+
+.username-input input {
+  border: 0;
+}
+
+.continue-button {
+  width: 100%;
+
+  margin-top: 28px;
+
+  padding: 14px;
+
+  border: 0;
+
+  background: #e9dfd1;
+
+  color: #191613;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.continue-button:hover {
+  background: #fff4e4;
+
+  transform:
+    translateY(-2px);
+}
+
+.continue-button:active {
+  transform:
+    translateY(0);
+}
+
+.identity-card small {
+  display: block;
+
+  margin-top: 16px;
+
+  color: #514c47;
+
+  text-align: center;
+
+  font-size: 10px;
 }
 
 /* ANIMATIONS */
 
 @keyframes fireMove {
   0% {
-    transform: rotate(-5deg) scale(0.96);
+    transform:
+      rotate(-5deg)
+      scale(0.96);
   }
 
   50% {
-    transform: rotate(4deg) scale(1.03);
+    transform:
+      rotate(4deg)
+      scale(1.03);
   }
 
   100% {
-    transform: rotate(-2deg) scale(0.98);
+    transform:
+      rotate(-2deg)
+      scale(0.98);
   }
 }
 
@@ -549,12 +873,34 @@ button:focus-visible {
 @keyframes detailIn {
   from {
     opacity: 0;
-    transform: translateY(25px) rotate(2deg);
+    transform:
+      translateY(25px)
+      rotate(2deg);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) rotate(0);
+    transform:
+      translateY(0)
+      rotate(0);
+  }
+}
+
+@keyframes identityIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(30px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
   }
 }
 
@@ -580,7 +926,9 @@ button:focus-visible {
 
   .memory-card {
     width: 130px;
+
     min-height: 105px;
+
     padding: 14px;
   }
 

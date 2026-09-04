@@ -43,28 +43,61 @@ function App() {
   const [lit, setLit] = useState(false);
   const [selected, setSelected] = useState<Memory | null>(null);
 
+  const [showIdentity, setShowIdentity] = useState(true);
+
+  const [displayName, setDisplayName] = useState("");
+  const [username, setUsername] = useState("");
+
+  const [profileCreated, setProfileCreated] = useState(false);
+
+  function createProfile() {
+    if (!displayName.trim() || !username.trim()) {
+      return;
+    }
+
+    setProfileCreated(true);
+    setShowIdentity(false);
+  }
+
   return (
     <main className={`bonfire-page ${lit ? "lit" : ""}`}>
       <div className="grain" />
       <div className="background-glow" />
 
+      {/* HEADER */}
+
       <header className="top-bar">
         <div className="wordmark">bonfire</div>
 
-        <button className="profile-button" aria-label="Profile">
+        <button
+          className="profile-button"
+          aria-label="Profile"
+          onClick={() => setShowIdentity(true)}
+        >
           ✦
         </button>
       </header>
 
+      {/* MAIN WORLD */}
+
       <section className="bonfire-world">
         <div className="intro-copy">
           <span className="eyebrow">your little corner</span>
+
           <h1>
-            Stay close.
+            {profileCreated && displayName
+              ? `Welcome, ${displayName}.`
+              : "Stay close."}
+
             <br />
-            Stay private.
+
+            {profileCreated
+              ? "Your fire is yours."
+              : "Stay private."}
           </h1>
         </div>
+
+        {/* FIRE */}
 
         <div className="fire-scene">
           <button
@@ -84,6 +117,8 @@ function App() {
           </span>
         </div>
 
+        {/* MEMORIES */}
+
         <div className="memories">
           {memories.map((memory) => (
             <button
@@ -98,16 +133,24 @@ function App() {
               </span>
 
               <span className="memory-title">{memory.title}</span>
+
               <span className="memory-text">{memory.text}</span>
             </button>
           ))}
         </div>
       </section>
 
+      {/* FOOTER */}
+
       <footer className="bottom-bar">
-        <span>only the people you choose</span>
+        <span>
+          only the people you choose
+        </span>
+
         <span className="status-dot" />
       </footer>
+
+      {/* MEMORY POPUP */}
 
       {selected && (
         <div
@@ -132,11 +175,78 @@ function App() {
             </span>
 
             <h2>{selected.title}</h2>
+
             <p>{selected.text}</p>
 
             <span className="detail-caption">
               left by someone around your fire
             </span>
+          </div>
+        </div>
+      )}
+
+      {/* IDENTITY */}
+
+      {showIdentity && (
+        <div className="identity-overlay">
+          <div className="identity-card">
+            <span className="identity-mark">🔥</span>
+
+            <span className="identity-eyebrow">
+              welcome to bonfire
+            </span>
+
+            <h2>Who are you?</h2>
+
+            <p>
+              Give your Bonfire a name.
+              <br />
+              You can change it later.
+            </p>
+
+            <label htmlFor="display-name">
+              display name
+            </label>
+
+            <input
+              id="display-name"
+              type="text"
+              placeholder="Gautham"
+              value={displayName}
+              onChange={(event) =>
+                setDisplayName(event.target.value)
+              }
+              autoFocus
+            />
+
+            <label htmlFor="username">
+              username
+            </label>
+
+            <div className="username-input">
+              <span>@</span>
+
+              <input
+                id="username"
+                type="text"
+                placeholder="gautham"
+                value={username}
+                onChange={(event) =>
+                  setUsername(event.target.value)
+                }
+              />
+            </div>
+
+            <button
+              className="continue-button"
+              onClick={createProfile}
+            >
+              Continue
+            </button>
+
+            <small>
+              Your username helps people find you.
+            </small>
           </div>
         </div>
       )}
