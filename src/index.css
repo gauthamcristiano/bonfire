@@ -6,240 +6,605 @@ html,
 body,
 #root {
   margin: 0;
-  width: 100%;
   min-height: 100%;
+  width: 100%;
 }
 
 body {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  background: #0a0908;
+  color: #eee7dc;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
-  background: #090807;
-  color: #f5efe6;
 }
 
-.bonfire {
+button {
+  font: inherit;
+}
+
+button:focus-visible {
+  outline: 1px solid #d9a56d;
+  outline-offset: 4px;
+}
+
+.bonfire-page {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   position: relative;
   overflow: hidden;
   background:
     radial-gradient(
-      circle at 50% 48%,
-      rgba(255, 120, 40, 0.13),
-      transparent 22%
+      circle at 50% 50%,
+      rgba(214, 116, 52, 0.08),
+      transparent 28%
     ),
-    #090807;
+    #0a0908;
+}
+
+/* NOSTALGIC TEXTURE */
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.055;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+}
+
+.background-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(255, 110, 35, 0.045);
+  filter: blur(100px);
+  transition: 1.5s ease;
+}
+
+.lit .background-glow {
+  background: rgba(255, 105, 35, 0.11);
+  transform: translate(-50%, -50%) scale(1.25);
+}
+
+/* HEADER */
+
+.top-bar {
+  position: relative;
+  z-index: 5;
+
+  height: 82px;
+  padding: 0 5vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wordmark {
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+
+.profile-button {
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.025);
+  color: #a9a095;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.profile-button:hover {
+  transform: rotate(20deg);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* WORLD */
+
+.bonfire-world {
+  position: relative;
+  min-height: calc(100vh - 130px);
+}
+
+/* INTRO */
+
+.intro-copy {
+  position: absolute;
+  top: 8%;
+  left: 7vw;
+  z-index: 3;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 15px;
+
+  color: #777067;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.intro-copy h1 {
+  margin: 0;
+
+  font-size: clamp(32px, 4vw, 58px);
+  line-height: 0.98;
+  font-weight: 400;
+  letter-spacing: -3px;
 }
 
 /* FIRE */
 
+.fire-scene {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 4;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .fire {
-  width: 150px;
-  height: 180px;
   position: relative;
-  margin-bottom: 30px;
-  filter: drop-shadow(0 0 30px rgba(255, 100, 30, 0.3));
+
+  width: 180px;
+  height: 210px;
+
+  border: 0;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.fire-halo {
+  position: absolute;
+  left: 50%;
+  bottom: 15px;
+
+  width: 120px;
+  height: 80px;
+
+  transform: translateX(-50%);
+  border-radius: 50%;
+
+  background: rgba(255, 117, 45, 0.12);
+  filter: blur(30px);
+
+  transition: 0.7s ease;
 }
 
 .flame {
   position: absolute;
   left: 50%;
-  bottom: 15px;
+  bottom: 35px;
+
   transform-origin: bottom center;
-  border-radius: 50% 50% 45% 45%;
-  animation: flicker 1.4s ease-in-out infinite alternate;
+
+  border-radius: 50% 50% 42% 42%;
+  transition: 0.4s ease;
 }
 
-.flame-one {
-  width: 85px;
-  height: 125px;
-  margin-left: -42px;
-  background: #ff6b22;
-  transform: rotate(-3deg);
+.flame-back {
+  width: 75px;
+  height: 120px;
+
+  margin-left: -37px;
+
+  background: #7e3019;
+
+  transform: rotate(-15deg);
+  animation: fireMove 1.7s ease-in-out infinite alternate;
 }
 
-.flame-two {
-  width: 65px;
-  height: 105px;
-  margin-left: -32px;
-  bottom: 20px;
-  background: #ffb52e;
-  animation-delay: -0.4s;
+.flame-main {
+  width: 68px;
+  height: 130px;
+
+  margin-left: -34px;
+
+  background: #d85d24;
+
+  transform: rotate(7deg);
+  animation: fireMove 1.25s ease-in-out infinite alternate-reverse;
 }
 
-.flame-three {
-  width: 42px;
-  height: 75px;
-  margin-left: -21px;
-  bottom: 25px;
-  background: #ffe7a0;
-  animation-delay: -0.8s;
+.flame-front {
+  width: 40px;
+  height: 88px;
+
+  margin-left: -20px;
+  bottom: 38px;
+
+  background: #f1b15e;
+
+  animation: fireMove 1s ease-in-out infinite alternate;
 }
 
-.ember-glow {
+.fire-core {
   position: absolute;
-  width: 130px;
-  height: 35px;
-  left: 10px;
-  bottom: 0;
-  border-radius: 50%;
-  background: rgba(255, 90, 20, 0.4);
-  filter: blur(25px);
-  animation: glow 1.8s ease-in-out infinite alternate;
+  left: 50%;
+  bottom: 45px;
+
+  width: 18px;
+  height: 50px;
+
+  margin-left: -9px;
+
+  border-radius: 50% 50% 40% 40%;
+  background: #fff0c7;
+
+  filter: blur(1px);
 }
 
-@keyframes flicker {
-  0% {
-    transform: rotate(-3deg) scale(1);
-  }
+.fire-label {
+  margin-top: -12px;
 
-  50% {
-    transform: rotate(3deg) scale(1.04);
-  }
+  color: #756d63;
 
-  100% {
-    transform: rotate(-2deg) scale(0.96);
-  }
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  transition: 0.4s ease;
 }
 
-@keyframes glow {
-  from {
-    opacity: 0.45;
-    transform: scale(0.9);
-  }
-
-  to {
-    opacity: 0.8;
-    transform: scale(1.1);
-  }
+.fire:hover .fire-halo {
+  transform: translateX(-50%) scale(1.4);
 }
 
-/* TEXT */
-
-.bonfire h1 {
-  margin: 0;
-  font-size: 64px;
-  font-weight: 500;
-  letter-spacing: -3px;
+.fire:hover .flame-main {
+  transform: rotate(5deg) scale(1.08);
 }
 
-.bonfire p {
-  margin: 12px 0 32px;
-  color: #a9a29a;
+.lit .fire-label {
+  color: #bd8761;
+}
+
+/* MEMORY CARDS */
+
+.memories {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.memory-card {
+  position: absolute;
+
+  width: 175px;
+  min-height: 125px;
+
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+
+  border: 0;
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  color: #25211d;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+
+  transition:
+    transform 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.memory-card:hover {
+  transform: translateY(-10px) rotate(0deg) !important;
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.45),
+    0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.memory-card.photo {
+  background: #e8dfd0;
+}
+
+.memory-card.note {
+  background: #d7c6a9;
+}
+
+.memory-card.song {
+  background: #cfc8bb;
+}
+
+.memory-one {
+  left: 8vw;
+  top: 42%;
+  transform: rotate(-7deg);
+}
+
+.memory-two {
+  right: 10vw;
+  top: 24%;
+  transform: rotate(6deg);
+}
+
+.memory-three {
+  right: 13vw;
+  bottom: 13%;
+  transform: rotate(-4deg);
+}
+
+.memory-four {
+  left: 18vw;
+  bottom: 8%;
+  transform: rotate(5deg);
+}
+
+.memory-mark {
+  position: absolute;
+  top: 15px;
+  left: 17px;
+
+  font-size: 18px;
+  opacity: 0.65;
+}
+
+.memory-title {
+  font-family: Georgia, serif;
   font-size: 17px;
 }
 
-/* BUTTON */
+.memory-text {
+  margin-top: 5px;
 
-.bonfire button {
-  border: 1px solid #3b342d;
-  background: #171310;
-  color: #f5efe6;
-  padding: 14px 26px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: 0.25s ease;
+  font-family: Georgia, serif;
+  font-size: 11px;
+  line-height: 1.4;
+
+  opacity: 0.65;
 }
 
-.bonfire button:hover {
-  background: #211a15;
-  transform: translateY(-2px);
-}
-.intro {
-  transition: opacity 0.6s ease, transform 0.8s ease;
-}
+/* BOTTOM */
 
-.bonfire.entering .intro {
-  opacity: 0;
-  transform: translateY(-30px);
-}
+.bottom-bar {
+  position: fixed;
+  z-index: 5;
 
-.bonfire.entering .fire {
-  transform: scale(5);
-  opacity: 0;
-  transition:
-    transform 1.2s ease-in,
-    opacity 0.9s ease-in;
-}
+  left: 5vw;
+  right: 5vw;
+  bottom: 28px;
 
-.login {
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #090807;
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(1.08);
-  transition:
-    opacity 0.8s ease,
-    transform 1s ease;
+
+  color: #55504a;
+
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.login.show-login {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1);
+.status-dot {
+  width: 5px;
+  height: 5px;
+  margin-left: 10px;
+
+  border-radius: 50%;
+  background: #8d5d43;
+
+  animation: statusPulse 2s infinite;
 }
 
-.login-content {
+/* MEMORY DETAIL */
+
+.memory-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(3, 3, 3, 0.78);
+  backdrop-filter: blur(14px);
+
+  animation: overlayIn 0.35s ease;
+}
+
+.memory-detail {
+  position: relative;
+
+  width: min(420px, 85vw);
+  min-height: 300px;
+
+  padding: 55px 45px 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   text-align: center;
-  animation: loginAppear 1s ease forwards;
+
+  background: #e8dfd0;
+  color: #29251f;
+
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+
+  animation: detailIn 0.5s ease;
 }
 
-.small-flame {
-  display: block;
+.memory-detail.note {
+  background: #d7c6a9;
+}
+
+.memory-detail.song {
+  background: #cfc8bb;
+}
+
+.close-button {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+
+  border: 0;
+  background: transparent;
+
+  color: inherit;
+  font-size: 25px;
+
+  cursor: pointer;
+}
+
+.detail-mark {
+  font-size: 34px;
+  opacity: 0.7;
+}
+
+.memory-detail h2 {
+  margin: 22px 0 8px;
+
+  font-family: Georgia, serif;
   font-size: 32px;
-  margin-bottom: 20px;
+  font-weight: 400;
 }
 
-.login h2 {
-  margin: 0;
-  font-size: 38px;
-  font-weight: 500;
-  letter-spacing: -1.5px;
-}
+.memory-detail p {
+  max-width: 280px;
 
-.login p {
-  margin: 14px 0 32px;
-  color: #a9a29a;
+  font-family: Georgia, serif;
   line-height: 1.6;
 }
 
-.login-button {
-  display: block;
-  width: 280px;
-  margin: 10px auto;
-  padding: 14px 20px;
-  border: 1px solid #3b342d;
-  border-radius: 999px;
-  background: #f5efe6;
-  color: #171310;
-  cursor: pointer;
-  transition: 0.25s ease;
+.detail-caption {
+  margin-top: 35px;
+
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.45;
 }
 
-.login-button:hover {
-  transform: translateY(-2px);
+/* ANIMATIONS */
+
+@keyframes fireMove {
+  0% {
+    transform: rotate(-5deg) scale(0.96);
+  }
+
+  50% {
+    transform: rotate(4deg) scale(1.03);
+  }
+
+  100% {
+    transform: rotate(-2deg) scale(0.98);
+  }
 }
 
-.login-button.secondary {
-  background: #171310;
-  color: #f5efe6;
+@keyframes statusPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
-@keyframes loginAppear {
+@keyframes overlayIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+  }
+}
+
+@keyframes detailIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px) rotate(2deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .top-bar {
+    padding: 0 24px;
+  }
+
+  .intro-copy {
+    top: 7%;
+    left: 24px;
+  }
+
+  .intro-copy h1 {
+    font-size: 34px;
+  }
+
+  .fire-scene {
+    top: 47%;
+  }
+
+  .memory-card {
+    width: 130px;
+    min-height: 105px;
+    padding: 14px;
+  }
+
+  .memory-text {
+    font-size: 9px;
+  }
+
+  .memory-one {
+    left: 5%;
+    top: 35%;
+  }
+
+  .memory-two {
+    right: 5%;
+    top: 25%;
+  }
+
+  .memory-three {
+    right: 4%;
+    bottom: 17%;
+  }
+
+  .memory-four {
+    left: 5%;
+    bottom: 12%;
   }
 }
