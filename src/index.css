@@ -46,7 +46,7 @@ button:focus-visible {
     #0a0908;
 }
 
-/* TEXTURE */
+/* GRAIN */
 
 .grain {
   position: fixed;
@@ -827,6 +827,306 @@ button:focus-visible {
   font-size: 10px;
 }
 
+/* PRIVACY */
+
+.privacy-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 110;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(5, 5, 5, 0.86);
+
+  backdrop-filter: blur(20px);
+
+  animation:
+    overlayIn 0.35s ease;
+}
+
+.privacy-card {
+  position: relative;
+
+  width: min(500px, 100%);
+
+  padding: 45px 40px 35px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(214, 116, 52, 0.1),
+      transparent 42%
+    ),
+    #11100e;
+
+  box-shadow:
+    0 40px 120px
+    rgba(0, 0, 0, 0.65);
+
+  animation:
+    privacyIn 0.55s ease;
+}
+
+.privacy-fire {
+  width: 54px;
+  height: 54px;
+
+  margin: 0 auto 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(218, 103, 43, 0.08);
+
+  box-shadow:
+    0 0 35px
+    rgba(214, 91, 37, 0.12);
+}
+
+.privacy-flame {
+  width: 16px;
+  height: 25px;
+
+  display: block;
+
+  border-radius:
+    60% 40% 55% 45%;
+
+  background: #e48745;
+
+  transform:
+    rotate(45deg);
+
+  animation:
+    privacyFlame 1.2s
+    ease-in-out
+    infinite alternate;
+}
+
+.privacy-eyebrow {
+  display: block;
+
+  color: #766e66;
+
+  text-align: center;
+
+  font-size: 9px;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+}
+
+.privacy-card h2 {
+  margin: 10px 0 12px;
+
+  text-align: center;
+
+  font-size: 35px;
+
+  font-weight: 400;
+
+  letter-spacing: -1.5px;
+}
+
+.privacy-intro {
+  margin: 0 auto 30px;
+
+  max-width: 360px;
+
+  color: #817a72;
+
+  font-family: Georgia, serif;
+
+  font-size: 14px;
+
+  line-height: 1.65;
+
+  text-align: center;
+}
+
+.privacy-options {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.privacy-option {
+  width: 100%;
+
+  min-height: 78px;
+
+  padding: 15px 17px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  border:
+    1px solid #302c28;
+
+  background:
+    rgba(255, 255, 255, 0.015);
+
+  color: #eee7dc;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.privacy-option:hover {
+  transform: translateY(-2px);
+
+  border-color: #4a4138;
+}
+
+.privacy-option.selected {
+  border-color: #806044;
+
+  background:
+    rgba(214, 116, 52, 0.07);
+}
+
+.option-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid #38322c;
+
+  border-radius: 50%;
+
+  color: #9d8976;
+
+  font-size: 15px;
+}
+
+.option-content {
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.option-content strong {
+  font-size: 13px;
+
+  font-weight: 500;
+}
+
+.option-content small {
+  color: #706961;
+
+  font-size: 10px;
+
+  line-height: 1.4;
+}
+
+.option-radio {
+  width: 14px;
+  height: 14px;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid #514a43;
+
+  border-radius: 50%;
+
+  transition: 0.25s ease;
+}
+
+.privacy-option.selected .option-radio {
+  border-color: #d08a55;
+
+  box-shadow:
+    inset 0 0 0 4px #11100e;
+
+  background: #d08a55;
+}
+
+.enter-fire-button {
+  width: 100%;
+
+  margin-top: 24px;
+
+  padding: 15px;
+
+  border: 0;
+
+  background: #e9dfd1;
+
+  color: #191613;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.enter-fire-button:hover {
+  background: #fff4e4;
+
+  transform: translateY(-2px);
+}
+
+.enter-fire-button:active {
+  transform: translateY(0);
+}
+
+.privacy-note {
+  display: block;
+
+  margin-top: 15px;
+
+  color: #514c47;
+
+  text-align: center;
+
+  font-size: 9px;
+}
+
 /* ANIMATIONS */
 
 @keyframes fireMove {
@@ -873,6 +1173,7 @@ button:focus-visible {
 @keyframes detailIn {
   from {
     opacity: 0;
+
     transform:
       translateY(25px)
       rotate(2deg);
@@ -880,6 +1181,7 @@ button:focus-visible {
 
   to {
     opacity: 1;
+
     transform:
       translateY(0)
       rotate(0);
@@ -901,6 +1203,38 @@ button:focus-visible {
     transform:
       translateY(0)
       scale(1);
+  }
+}
+
+@keyframes privacyIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(30px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes privacyFlame {
+  from {
+    transform:
+      rotate(40deg)
+      scale(0.92);
+  }
+
+  to {
+    transform:
+      rotate(50deg)
+      scale(1.08);
   }
 }
 
@@ -954,5 +1288,19 @@ button:focus-visible {
   .memory-four {
     left: 5%;
     bottom: 12%;
+  }
+}
+
+@media (max-width: 600px) {
+  .privacy-card {
+    padding: 35px 22px 28px;
+  }
+
+  .privacy-card h2 {
+    font-size: 30px;
+  }
+
+  .privacy-intro {
+    font-size: 13px;
   }
 }

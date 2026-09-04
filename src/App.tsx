@@ -8,6 +8,8 @@ type Memory = {
   position: string;
 };
 
+type PrivacyOption = "everyone" | "chosen" | "nobody";
+
 const memories: Memory[] = [
   {
     id: 1,
@@ -44,19 +46,37 @@ function App() {
   const [selected, setSelected] = useState<Memory | null>(null);
 
   const [showIdentity, setShowIdentity] = useState(true);
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
 
-  const [profileCreated, setProfileCreated] = useState(false);
+  const [privacy, setPrivacy] =
+    useState<PrivacyOption>("chosen");
 
-  function createProfile() {
+  const [profileCreated, setProfileCreated] =
+    useState(false);
+
+  function continueToPrivacy() {
     if (!displayName.trim() || !username.trim()) {
       return;
     }
 
-    setProfileCreated(true);
     setShowIdentity(false);
+    setShowPrivacy(true);
+  }
+
+  function enterBonfire() {
+    setProfileCreated(true);
+    setShowPrivacy(false);
+  }
+
+  function openProfile() {
+    if (profileCreated) {
+      setShowPrivacy(true);
+    } else {
+      setShowIdentity(true);
+    }
   }
 
   return (
@@ -72,7 +92,7 @@ function App() {
         <button
           className="profile-button"
           aria-label="Profile"
-          onClick={() => setShowIdentity(true)}
+          onClick={openProfile}
         >
           ✦
         </button>
@@ -82,7 +102,11 @@ function App() {
 
       <section className="bonfire-world">
         <div className="intro-copy">
-          <span className="eyebrow">your little corner</span>
+          <span className="eyebrow">
+            {profileCreated
+              ? `@${username}`
+              : "your little corner"}
+          </span>
 
           <h1>
             {profileCreated && displayName
@@ -113,7 +137,9 @@ function App() {
           </button>
 
           <span className="fire-label">
-            {lit ? "the fire is warm" : "touch the fire"}
+            {lit
+              ? "the fire is warm"
+              : "touch the fire"}
           </span>
         </div>
 
@@ -132,9 +158,13 @@ function App() {
                 {memory.type === "song" && "♪"}
               </span>
 
-              <span className="memory-title">{memory.title}</span>
+              <span className="memory-title">
+                {memory.title}
+              </span>
 
-              <span className="memory-text">{memory.text}</span>
+              <span className="memory-text">
+                {memory.text}
+              </span>
             </button>
           ))}
         </div>
@@ -144,7 +174,13 @@ function App() {
 
       <footer className="bottom-bar">
         <span>
-          only the people you choose
+          {profileCreated
+            ? privacy === "everyone"
+              ? "your fire is open"
+              : privacy === "chosen"
+                ? "only your chosen people"
+                : "your fire is quiet"
+            : "only the people you choose"}
         </span>
 
         <span className="status-dot" />
@@ -159,7 +195,9 @@ function App() {
         >
           <div
             className={`memory-detail ${selected.type}`}
-            onClick={(event) => event.stopPropagation()}
+            onClick={(event) =>
+              event.stopPropagation()
+            }
           >
             <button
               className="close-button"
@@ -185,12 +223,14 @@ function App() {
         </div>
       )}
 
-      {/* IDENTITY */}
+      {/* IDENTITY SCREEN */}
 
       {showIdentity && (
         <div className="identity-overlay">
           <div className="identity-card">
-            <span className="identity-mark">🔥</span>
+            <span className="identity-mark">
+              🔥
+            </span>
 
             <span className="identity-eyebrow">
               welcome to bonfire
@@ -239,13 +279,127 @@ function App() {
 
             <button
               className="continue-button"
-              onClick={createProfile}
+              onClick={continueToPrivacy}
             >
               Continue
             </button>
 
             <small>
               Your username helps people find you.
+            </small>
+          </div>
+        </div>
+      )}
+
+      {/* PRIVACY SCREEN */}
+
+      {showPrivacy && (
+        <div className="privacy-overlay">
+          <div className="privacy-card">
+            <div className="privacy-fire">
+              <span className="privacy-flame" />
+            </div>
+
+            <span className="privacy-eyebrow">
+              your fire · your rules
+            </span>
+
+            <h2>Who can find you?</h2>
+
+            <p className="privacy-intro">
+              Bonfire doesn't decide who gets
+              to know you're here.
+              <br />
+              You do.
+            </p>
+
+            <div className="privacy-options">
+              <button
+                className={`privacy-option ${
+                  privacy === "everyone"
+                    ? "selected"
+                    : ""
+                }`}
+                onClick={() =>
+                  setPrivacy("everyone")
+                }
+              >
+                <span className="option-icon">
+                  ◌
+                </span>
+
+                <span className="option-content">
+                  <strong>Everyone</strong>
+
+                  <small>
+                    Anyone can discover you.
+                  </small>
+                </span>
+
+                <span className="option-radio" />
+              </button>
+
+              <button
+                className={`privacy-option ${
+                  privacy === "chosen"
+                    ? "selected"
+                    : ""
+                }`}
+                onClick={() =>
+                  setPrivacy("chosen")
+                }
+              >
+                <span className="option-icon">
+                  ✦
+                </span>
+
+                <span className="option-content">
+                  <strong>People you choose</strong>
+
+                  <small>
+                    Only people you allow can find
+                    and message you.
+                  </small>
+                </span>
+
+                <span className="option-radio" />
+              </button>
+
+              <button
+                className={`privacy-option ${
+                  privacy === "nobody"
+                    ? "selected"
+                    : ""
+                }`}
+                onClick={() =>
+                  setPrivacy("nobody")
+                }
+              >
+                <span className="option-icon">
+                  ·
+                </span>
+
+                <span className="option-content">
+                  <strong>Nobody</strong>
+
+                  <small>
+                    Your Bonfire stays hidden.
+                  </small>
+                </span>
+
+                <span className="option-radio" />
+              </button>
+            </div>
+
+            <button
+              className="enter-fire-button"
+              onClick={enterBonfire}
+            >
+              Enter my Bonfire
+            </button>
+
+            <small className="privacy-note">
+              You can change this whenever you want.
             </small>
           </div>
         </div>
